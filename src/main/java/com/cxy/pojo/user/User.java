@@ -27,4 +27,7 @@ public class User {
 
   // 是否开启账号
   private boolean value;
+
+  // 电话
+  private String phone;
 }

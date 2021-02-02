@@ -24,6 +24,16 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson
+     引入阿里Json解析库
+     -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.75</version>
+    </dependency>
+
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
