@@ -1,4 +1,4 @@
-package com.cxy.pojo;
+package com.cxy.pojo.login;
 
 
 import lombok.*;
