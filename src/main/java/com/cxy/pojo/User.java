@@ -1,4 +1,4 @@
-package com.cxy.pojo.user;
+package com.cxy.pojo;
 
 import lombok.*;
 
@@ -17,8 +17,10 @@ public class User {
 
   // 用户ID
   private Integer userId;
+
   // 时间
   private String date;
+
   // 用户姓名
   private String name;
 
@@ -26,7 +28,7 @@ public class User {
   private String time;
 
   // 是否开启账号
-  private boolean value;
+  private String value;
 
   // 电话
   private String phone;

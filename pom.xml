@@ -32,6 +32,26 @@
       <artifactId>fastjson</artifactId>
       <version>1.2.75</version>
     </dependency>
+    <!--  mybatis SpringBoot启动包  -->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>2.1.2</version>
+    </dependency>
+
+    <!--  mybatis连接数据库的包  -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!--  springboot集成分页插件  -->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper-spring-boot-starter</artifactId>
+      <version>1.2.3</version>
+    </dependency>
 
 
     <dependency>
