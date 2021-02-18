@@ -12,7 +12,17 @@
             SELECT * FROM USER where name = #{name} AND time = #{date}
   </select>
 
-  <delete id="deleteMoreUsers" parameterType="arraylist">
-            DELETE * from USER
+  <delete id="deleteMoreUsers" parameterType="java.util.List">
+            DELETE FROM USER WHERE userId IN
+            <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+              #{items}
+            </foreach>
   </delete>
+  <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM USER WHERE userId = #{id}
+  </delete>
+
+  <update id="updateUserInfo">
+            UPDATE USER SET VALUE = #{value} WHERE userId = #{userId}
+  </update>
 </mapper>

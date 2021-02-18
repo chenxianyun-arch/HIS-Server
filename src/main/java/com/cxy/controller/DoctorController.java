@@ -1,28 +1,27 @@
-package com.cxy.controller.user;
+package com.cxy.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cxy.dao.DoctorDao;
 import com.cxy.dao.UserDao;
 import com.cxy.pojo.User;
-import com.cxy.utils.ConvertToArray;
-import com.cxy.utils.ConvertToInt;
 import com.cxy.utils.Message;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-
-@RestController
-public class UserController {
-
+/**
+ *
+ */
+public class DoctorController {
   @Autowired
-  private UserDao userDao;
+  private DoctorDao userDao;
 
   /**
    * 1 根据id删除所勾选的数据
@@ -30,16 +29,19 @@ public class UserController {
    * @param userArray 每条数据id组成的Int数组
    */
   @PostMapping("/deleteAll")
-  public void deletePage(@RequestBody JSONObject userArray) {
+  public boolean deletePage(@RequestBody JSONObject userArray) {
     System.out.println("获取到的数组的id" + userArray);
-    ConvertToArray convertToArray = userArray.toJavaObject(ConvertToArray.class);
-    Object[] ids = convertToArray.getConfig().toArray();
-    // 2 循环将id打印出来
-    for (Object id : ids) {
+    // 转化成JSON数组
+    JSONArray array = userArray.getJSONArray("config");
+    // 赋值成List集合
+    List idLists =  array;
+    // 循环将id打印出来
+    for (Object id : idLists) {
       System.out.println(id);
     }
-    // 2.调用service层将数据进行删除
-    // 3.返回数据后进行查询数据进行重新赋值
+    boolean isDeletes = userDao.deleteMoreUsers(idLists);
+    System.out.println(isDeletes);
+    return isDeletes;
   }
 
   /**
@@ -50,9 +52,10 @@ public class UserController {
   @PostMapping("/deleteSingalPage")
   public void deleteSingalUser(@RequestBody JSONObject userId) {
     // 转换成工具对象
-    ConvertToInt convertToInt = userId.toJavaObject(ConvertToInt.class);
-    System.out.println(convertToInt.getDeleteId());
-    System.out.println(userId);
+    Integer id = userId.getInteger("deleteId");
+    boolean isDeleteSuccess = userDao.deleteOneUsers(id);
+    System.out.println(isDeleteSuccess);
+
   }
 
   /**
@@ -62,10 +65,12 @@ public class UserController {
    * @param userJson 将前端传递过来的数据转化成字符串
    */
   @PostMapping("/openOrClose")
-  public void openOrClose(@RequestBody JSONObject userJson) {
+  public Boolean openOrClose(@RequestBody JSONObject userJson) {
     System.out.println(userJson);
     User user = userJson.toJavaObject(User.class);
-    System.out.println(user);
+    Boolean isUpdate = userDao.updateUserInfo(user);
+    System.out.println(isUpdate);
+    return isUpdate;
   }
 
 
@@ -104,18 +109,17 @@ public class UserController {
     Integer currentPage = requestParm.getInteger("currentPage");
     Integer pageSize = requestParm.getInteger("pageSize");
     // 利用插件进行分页
-    PageHelper.startPage(2,pageSize);
+    PageHelper.startPage(currentPage,pageSize);
     List<User> userList = userDao.selectAllUsers();
     PageInfo<User> pageInfo = new PageInfo<>(userList);
     System.out.println(pageInfo);
     int pages = pageInfo.getPages();
-    message.setPageLength(pages);
+    int total = (int) pageInfo.getTotal();
+    message.setPageLength(total);
     message.setUserList(userList);
 
     return message;
   }
-
-
 
 
 }

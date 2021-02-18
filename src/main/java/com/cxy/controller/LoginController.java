@@ -1,4 +1,4 @@
-package com.cxy.controller.login;
+package com.cxy.controller;
 
 import com.cxy.pojo.LoginBody;
 import org.springframework.web.bind.annotation.GetMapping;

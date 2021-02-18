@@ -28,7 +28,7 @@ public class User {
   private String time;
 
   // 是否开启账号
-  private String value;
+  private Boolean value;
 
   // 电话
   private String phone;
