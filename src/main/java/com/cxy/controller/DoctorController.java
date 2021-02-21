@@ -12,19 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  *
  */
-@Controller
-@ResponseBody
+@RestController
 public class DoctorController {
 
   @Autowired
-  private DoctorDao userDao;
+  private DoctorDao doctorDao;
 
   /**
    * 1 根据id删除所勾选的数据
@@ -42,7 +41,7 @@ public class DoctorController {
     for (Object id : idLists) {
       System.out.println(id);
     }
-    boolean isDeletes = userDao.deleteMoreUsers(idLists);
+    boolean isDeletes = doctorDao.deleteMoreUsers(idLists);
     System.out.println(isDeletes);
     return isDeletes;
   }
@@ -57,16 +56,14 @@ public class DoctorController {
     // 转换成工具对象
     Integer id = userId.getInteger("deleteId");
     System.out.println(id);
-    boolean isDeleteSuccess = userDao.deleteOneUsers(id);
+    boolean isDeleteSuccess = doctorDao.deleteOneUsers(id);
     System.out.println(isDeleteSuccess);
   }
-
-
 
   /**
    * 根据关键字查询数据
    *
-   * @param keywords
+   * @param keywords 名字
    * @return 返回到查询的对象，然后前端进行赋值
    */
   @PostMapping("/getOneDoctorInfo")
@@ -79,7 +76,7 @@ public class DoctorController {
     user1.setDoctorName(keyName);
     user1.setDoctorKeshi(keyKeshi);
     user1.setDoctorZhiceng(keyZhiCeng);
-    List userList = userDao.selectOneUser(user1);
+    List userList = doctorDao.selectOneUser(user1);
     System.out.println(user1);
     // 用数组来将对象转起来
     return userList;
@@ -99,7 +96,7 @@ public class DoctorController {
     Integer pageSize = requestParm.getInteger("pageSize");
     // 利用插件进行分页
     PageHelper.startPage(currentPage,pageSize);
-    List<Doctor> userList = userDao.selectAllUsers();
+    List<Doctor> userList = doctorDao.selectAllUsers();
     for(Doctor doctor: userList){
       System.out.println(doctor);
     }

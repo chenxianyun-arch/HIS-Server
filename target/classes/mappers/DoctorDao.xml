@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.DoctorDao">
+  <resultMap id="BaseResultMap" type="com.cxy.pojo.Doctor">
+    <id column="doctor_id" jdbcType="INTEGER" property="doctorId" />
+    <result column="doctor_name" jdbcType="VARCHAR" property="doctorName" />
+    <result column="doctor_tel" jdbcType="VARCHAR" property="doctorTel" />
+    <result column="doctor_hospital" jdbcType="VARCHAR" property="doctorHospital" />
+    <result column="doctor_keshi" jdbcType="VARCHAR" property="doctorKeshi" />
+    <result column="doctor_zhiceng" jdbcType="VARCHAR" property="doctorZhiceng" />
+    <result column="doctor_addtime" jdbcType="VARCHAR" property="doctorAddtime" />
+    <result column="doctor_status" jdbcType="VARCHAR" property="doctorStatus" />
+    <result column="doctor_service_status" jdbcType="VARCHAR" property="doctorServiceStatus" />
+    <result column="doctor_fansNumber" jdbcType="INTEGER" property="doctorFansnumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    doctor_id, doctor_name, doctor_tel, doctor_hospital, doctor_keshi, doctor_zhiceng, 
+    doctor_addtime, doctor_status, doctor_service_status, doctor_fansNumber
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from doctor
+    where doctor_id = #{doctorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from doctor
+    where doctor_id = #{doctorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="doctor_id" keyProperty="doctorId" parameterType="com.cxy.pojo.Doctor" useGeneratedKeys="true">
+    insert into doctor (doctor_name, doctor_tel, doctor_hospital, 
+      doctor_keshi, doctor_zhiceng, doctor_addtime, 
+      doctor_status, doctor_service_status, doctor_fansNumber
+      )
+    values (#{doctorName,jdbcType=VARCHAR}, #{doctorTel,jdbcType=VARCHAR}, #{doctorHospital,jdbcType=VARCHAR}, 
+      #{doctorKeshi,jdbcType=VARCHAR}, #{doctorZhiceng,jdbcType=VARCHAR}, #{doctorAddtime,jdbcType=VARCHAR}, 
+      #{doctorStatus,jdbcType=VARCHAR}, #{doctorServiceStatus,jdbcType=VARCHAR}, #{doctorFansnumber,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="doctor_id" keyProperty="doctorId" parameterType="com.cxy.pojo.Doctor" useGeneratedKeys="true">
+    insert into doctor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="doctorName != null">
+        doctor_name,
+      </if>
+      <if test="doctorTel != null">
+        doctor_tel,
+      </if>
+      <if test="doctorHospital != null">
+        doctor_hospital,
+      </if>
+      <if test="doctorKeshi != null">
+        doctor_keshi,
+      </if>
+      <if test="doctorZhiceng != null">
+        doctor_zhiceng,
+      </if>
+      <if test="doctorAddtime != null">
+        doctor_addtime,
+      </if>
+      <if test="doctorStatus != null">
+        doctor_status,
+      </if>
+      <if test="doctorServiceStatus != null">
+        doctor_service_status,
+      </if>
+      <if test="doctorFansnumber != null">
+        doctor_fansNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="doctorName != null">
+        #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorTel != null">
+        #{doctorTel,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorHospital != null">
+        #{doctorHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorKeshi != null">
+        #{doctorKeshi,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorZhiceng != null">
+        #{doctorZhiceng,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAddtime != null">
+        #{doctorAddtime,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorStatus != null">
+        #{doctorStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorServiceStatus != null">
+        #{doctorServiceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorFansnumber != null">
+        #{doctorFansnumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxy.pojo.Doctor">
+    update doctor
+    <set>
+      <if test="doctorName != null">
+        doctor_name = #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorTel != null">
+        doctor_tel = #{doctorTel,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorHospital != null">
+        doctor_hospital = #{doctorHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorKeshi != null">
+        doctor_keshi = #{doctorKeshi,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorZhiceng != null">
+        doctor_zhiceng = #{doctorZhiceng,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAddtime != null">
+        doctor_addtime = #{doctorAddtime,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorStatus != null">
+        doctor_status = #{doctorStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorServiceStatus != null">
+        doctor_service_status = #{doctorServiceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorFansnumber != null">
+        doctor_fansNumber = #{doctorFansnumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where doctor_id = #{doctorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxy.pojo.Doctor">
+    update doctor
+    set doctor_name = #{doctorName,jdbcType=VARCHAR},
+      doctor_tel = #{doctorTel,jdbcType=VARCHAR},
+      doctor_hospital = #{doctorHospital,jdbcType=VARCHAR},
+      doctor_keshi = #{doctorKeshi,jdbcType=VARCHAR},
+      doctor_zhiceng = #{doctorZhiceng,jdbcType=VARCHAR},
+      doctor_addtime = #{doctorAddtime,jdbcType=VARCHAR},
+      doctor_status = #{doctorStatus,jdbcType=VARCHAR},
+      doctor_service_status = #{doctorServiceStatus,jdbcType=VARCHAR},
+      doctor_fansNumber = #{doctorFansnumber,jdbcType=INTEGER}
+    where doctor_id = #{doctorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateUserInfo"></update>
+
+  <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM doctor
+  </select>
+
+  <select id="selectOneUser" resultMap="BaseResultMap" parameterType="com.cxy.pojo.Doctor">
+            SELECT * FROM doctor
+            where
+            doctor_name = #{doctorName,jdbcType=VARCHAR}
+            AND
+             doctor_keshi = #{doctorKeshi,jdbcType=VARCHAR}
+            AND
+            doctor_zhiceng = #{doctorZhiceng,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteMoreUsers" parameterType="java.util.List">
+    DELETE FROM doctor  WHERE doctor_id IN
+    <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+      #{items}
+    </foreach>
+  </delete>
+  <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM doctor WHERE doctor_id = #{id}
+  </delete>
+</mapper>

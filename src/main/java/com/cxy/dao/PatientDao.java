@@ -1,6 +1,9 @@
-package generate.dao;
+package com.cxy.dao;
 
-import generate.entity.Patient;
+import com.cxy.pojo.Doctor;
+import com.cxy.pojo.Patient;
+import com.cxy.pojo.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -10,7 +13,8 @@ import java.util.List;
  * @author makejava
  * @since 2021-02-21 19:36:18
  */
-public interface PatientMapper {
+@Mapper
+public interface PatientDao {
 
     /**
      * 通过ID查询单条数据
@@ -61,5 +65,22 @@ public interface PatientMapper {
      * @return 影响行数
      */
     int deleteById(Integer patientid);
+
+    // 查找所有患者
+    List<Patient> selectAllUsers();
+    // 精准查询一个患者
+
+    /**
+     * 根据时间段进行查询
+     * @param patientName 姓名
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @return 多个医生列表数据
+     */
+    List<Patient> selectOneUser(@Param("patientName") String patientName ,@Param("startDate") String startDate ,@Param("endDate") String endDate);
+    // 删除单个患者
+    boolean deleteOneUsers(Integer id);
+    // 删除多个医生
+    boolean deleteMoreUsers(List list);
 
 }

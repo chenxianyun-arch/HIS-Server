@@ -4,9 +4,7 @@ import com.cxy.pojo.Doctor;
 import com.cxy.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.print.Doc;
 import java.util.List;
-
 @Mapper
 public interface DoctorDao {
     int deleteByPrimaryKey(Integer doctorId);
@@ -20,7 +18,6 @@ public interface DoctorDao {
     int updateByPrimaryKeySelective(Doctor record);
 
     int updateByPrimaryKey(Doctor record);
-
     // 查找所有医生
     List<Doctor> selectAllUsers();
     // 精准查询一个医生
