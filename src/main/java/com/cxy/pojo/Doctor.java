@@ -1,13 +1,21 @@
 package com.cxy.pojo;
 
 import java.io.Serializable;
-import lombok.Data;
+
+import lombok.*;
 
 /**
+ * 医生实体类
+ *
  * doctor
  * @author chenxianyun
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
 public class Doctor implements Serializable {
     /**
      * 医生id

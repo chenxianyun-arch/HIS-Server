@@ -3,23 +3,26 @@ package com.cxy.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cxy.dao.DoctorDao;
-import com.cxy.dao.UserDao;
+import com.cxy.pojo.Doctor;
 import com.cxy.pojo.User;
-import com.cxy.utils.Message;
+import com.cxy.utils.Message1;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
  *
  */
+@Controller
+@ResponseBody
 public class DoctorController {
+
   @Autowired
   private DoctorDao userDao;
 
@@ -28,7 +31,7 @@ public class DoctorController {
    *
    * @param userArray 每条数据id组成的Int数组
    */
-  @PostMapping("/deleteAll")
+  @PostMapping("/deleteAllDoctor")
   public boolean deletePage(@RequestBody JSONObject userArray) {
     System.out.println("获取到的数组的id" + userArray);
     // 转化成JSON数组
@@ -49,29 +52,15 @@ public class DoctorController {
    *
    * @param userId 单条数据的id
    */
-  @PostMapping("/deleteSingalPage")
+  @PostMapping("/deletSingalDoctor")
   public void deleteSingalUser(@RequestBody JSONObject userId) {
     // 转换成工具对象
     Integer id = userId.getInteger("deleteId");
+    System.out.println(id);
     boolean isDeleteSuccess = userDao.deleteOneUsers(id);
     System.out.println(isDeleteSuccess);
-
   }
 
-  /**
-   * 3 每次审核数据发生变化都会来到这个方法，
-   * 将最新的审核状态赋值给前端
-   *
-   * @param userJson 将前端传递过来的数据转化成字符串
-   */
-  @PostMapping("/openOrClose")
-  public Boolean openOrClose(@RequestBody JSONObject userJson) {
-    System.out.println(userJson);
-    User user = userJson.toJavaObject(User.class);
-    Boolean isUpdate = userDao.updateUserInfo(user);
-    System.out.println(isUpdate);
-    return isUpdate;
-  }
 
 
   /**
@@ -80,18 +69,18 @@ public class DoctorController {
    * @param keywords
    * @return 返回到查询的对象，然后前端进行赋值
    */
-  @PostMapping("/getOneUserInfo")
+  @PostMapping("/getOneDoctorInfo")
   public List<User> getOneUserInfo(@RequestBody JSONObject keywords) {
-    Date keyDate = keywords.getDate("keyDate");
     // 前端获取的关键字信息参数
     String keyName = keywords.getString("keyName");
-    // 将时间参数进行格式化转换
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
-    String format = simpleDateFormat.format(keyDate);
-    User user1 = new User();
-    user1.setName(keyName);
-    user1.setDate(format);
+    String keyKeshi = keywords.getString("keyKeshi");
+    String keyZhiCeng = keywords.getString("keyZhiCeng");
+    Doctor user1 = new Doctor();
+    user1.setDoctorName(keyName);
+    user1.setDoctorKeshi(keyKeshi);
+    user1.setDoctorZhiceng(keyZhiCeng);
     List userList = userDao.selectOneUser(user1);
+    System.out.println(user1);
     // 用数组来将对象转起来
     return userList;
   }
@@ -101,25 +90,26 @@ public class DoctorController {
    * @param requestParm 请求的页数，一页展示的数据量
    * @return 返回需要的数据信息，然后展示在前端
    */
-  @PostMapping("/getAllUserInfo")
-  public Message getAllUserInfo(@RequestBody JSONObject requestParm) {
+  @PostMapping("/getAllDoctorInfo")
+  public Message1 getAllUserInfo(@RequestBody JSONObject requestParm) {
     // 装信息的工具类
-    Message message = new Message();
+    Message1 message = new Message1();
     // 当前页码 每页显示页数
     Integer currentPage = requestParm.getInteger("currentPage");
     Integer pageSize = requestParm.getInteger("pageSize");
     // 利用插件进行分页
     PageHelper.startPage(currentPage,pageSize);
-    List<User> userList = userDao.selectAllUsers();
-    PageInfo<User> pageInfo = new PageInfo<>(userList);
+    List<Doctor> userList = userDao.selectAllUsers();
+    for(Doctor doctor: userList){
+      System.out.println(doctor);
+    }
+    PageInfo<Doctor> pageInfo = new PageInfo<>(userList);
     System.out.println(pageInfo);
     int pages = pageInfo.getPages();
     int total = (int) pageInfo.getTotal();
     message.setPageLength(total);
     message.setUserList(userList);
-
     return message;
   }
-
 
 }

@@ -146,21 +146,27 @@
   </update>
   <update id="updateUserInfo"></update>
 
-  <select id="selectAllUsers" resultType="com.cxy.pojo.User">
-            SELECT * FROM USER
+  <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM doctor
   </select>
 
-  <select id="selectOneUser" resultType="com.cxy.pojo.User" parameterType="com.cxy.pojo.User">
-            SELECT * FROM USER where name = #{name} AND time = #{date}
+  <select id="selectOneUser" resultMap="BaseResultMap" parameterType="com.cxy.pojo.Doctor">
+            SELECT * FROM doctor
+            where
+            doctor_name = #{doctorName,jdbcType=VARCHAR}
+            AND
+             doctor_keshi = #{doctorKeshi,jdbcType=VARCHAR}
+            AND
+            doctor_zhiceng = #{doctorZhiceng,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteMoreUsers" parameterType="java.util.List">
-    DELETE FROM USER WHERE userId IN
+    DELETE FROM doctor  WHERE doctor_id IN
     <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
       #{items}
     </foreach>
   </delete>
   <delete id="deleteOneUsers" parameterType="integer">
-            DELETE FROM USER WHERE userId = #{id}
+            DELETE FROM doctor WHERE doctor_id = #{id}
   </delete>
 </mapper>
