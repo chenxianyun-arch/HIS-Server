@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.OrdersDao">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Orders">
+        <!--@Table orders-->
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="orderTime" column="order_time" jdbcType="OTHER"/>
+        <result property="orderUsername" column="order_username" jdbcType="VARCHAR"/>
+        <result property="orderGetname" column="order_getname" jdbcType="VARCHAR"/>
+        <result property="orderPrice" column="order_price" jdbcType="NUMERIC"/>
+        <result property="orderState" column="order_state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          order_id, order_time, order_username, order_getname, order_price, order_state
+        from hispitaldb.orders
+        where order_id = #{orderId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          order_id, order_time, order_username, order_getname, order_price, order_state
+        from hispitaldb.orders
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          order_id, order_time, order_username, order_getname, order_price, order_state
+        from hispitaldb.orders
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="orderTime != null">
+                and order_time = #{orderTime}
+            </if>
+            <if test="orderUsername != null and orderUsername != ''">
+                and order_username = #{orderUsername}
+            </if>
+            <if test="orderGetname != null and orderGetname != ''">
+                and order_getname = #{orderGetname}
+            </if>
+            <if test="orderPrice != null">
+                and order_price = #{orderPrice}
+            </if>
+            <if test="orderState != null and orderState != ''">
+                and order_state = #{orderState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into hispitaldb.orders(order_time, order_username, order_getname, order_price, order_state)
+        values (#{orderTime}, #{orderUsername}, #{orderGetname}, #{orderPrice}, #{orderState})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.orders
+        <set>
+            <if test="orderTime != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="orderUsername != null and orderUsername != ''">
+                order_username = #{orderUsername},
+            </if>
+            <if test="orderGetname != null and orderGetname != ''">
+                order_getname = #{orderGetname},
+            </if>
+            <if test="orderPrice != null">
+                order_price = #{orderPrice},
+            </if>
+            <if test="orderState != null and orderState != ''">
+                order_state = #{orderState},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from orders where order_id = #{orderId}
+    </delete>
+
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM orders
+    </select>
+
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM orders
+            where
+            order_getname = #{0}
+            AND
+            order_time >= #{1}
+    </select>
+
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM orders WHERE IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM orders  WHERE order_id = #{id}
+    </delete>
+
+</mapper>

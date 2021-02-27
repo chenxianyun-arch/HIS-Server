@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.QuestionnaireDao">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Questionnaire">
+        <!--@Table questionnaire-->
+        <result property="questionnaireId" column="questionnaire_id" jdbcType="INTEGER"/>
+        <result property="questionnaireTime" column="questionnaire_time" jdbcType="OTHER"/>
+        <result property="questionnairePatient" column="questionnaire_patient" jdbcType="VARCHAR"/>
+        <result property="questionnaireKeshi" column="questionnaire_keshi" jdbcType="VARCHAR"/>
+        <result property="questionnaireDoctor" column="questionnaire_doctor" jdbcType="VARCHAR"/>
+        <result property="questionnaireWay" column="questionnaire_way" jdbcType="VARCHAR"/>
+        <result property="questionnaireSource" column="questionnaire_source" jdbcType="VARCHAR"/>
+        <result property="questionnaireCost" column="questionnaire_cost" jdbcType="NUMERIC"/>
+        <result property="questionnaireState" column="questionnaire_state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          questionnaire_id, questionnaire_time, questionnaire_patient, questionnaire_keshi, questionnaire_doctor, questionnaire_way, questionnaire_source, questionnaire_cost, questionnaire_state
+        from hispitaldb.questionnaire
+        where questionnaire_id = #{questionnaireId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          questionnaire_id, questionnaire_time, questionnaire_patient, questionnaire_keshi, questionnaire_doctor, questionnaire_way, questionnaire_source, questionnaire_cost, questionnaire_state
+        from hispitaldb.questionnaire
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          questionnaire_id, questionnaire_time, questionnaire_patient, questionnaire_keshi, questionnaire_doctor, questionnaire_way, questionnaire_source, questionnaire_cost, questionnaire_state
+        from hispitaldb.questionnaire
+        <where>
+            <if test="questionnaireId != null">
+                and questionnaire_id = #{questionnaireId}
+            </if>
+            <if test="questionnaireTime != null">
+                and questionnaire_time = #{questionnaireTime}
+            </if>
+            <if test="questionnairePatient != null and questionnairePatient != ''">
+                and questionnaire_patient = #{questionnairePatient}
+            </if>
+            <if test="questionnaireKeshi != null and questionnaireKeshi != ''">
+                and questionnaire_keshi = #{questionnaireKeshi}
+            </if>
+            <if test="questionnaireDoctor != null and questionnaireDoctor != ''">
+                and questionnaire_doctor = #{questionnaireDoctor}
+            </if>
+            <if test="questionnaireWay != null and questionnaireWay != ''">
+                and questionnaire_way = #{questionnaireWay}
+            </if>
+            <if test="questionnaireSource != null and questionnaireSource != ''">
+                and questionnaire_source = #{questionnaireSource}
+            </if>
+            <if test="questionnaireCost != null">
+                and questionnaire_cost = #{questionnaireCost}
+            </if>
+            <if test="questionnaireState != null and questionnaireState != ''">
+                and questionnaire_state = #{questionnaireState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="questionnaireId" useGeneratedKeys="true">
+        insert into hispitaldb.questionnaire(questionnaire_time, questionnaire_patient, questionnaire_keshi, questionnaire_doctor, questionnaire_way, questionnaire_source, questionnaire_cost, questionnaire_state)
+        values (#{questionnaireTime}, #{questionnairePatient}, #{questionnaireKeshi}, #{questionnaireDoctor}, #{questionnaireWay}, #{questionnaireSource}, #{questionnaireCost}, #{questionnaireState})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.questionnaire
+        <set>
+            <if test="questionnaireTime != null">
+                questionnaire_time = #{questionnaireTime},
+            </if>
+            <if test="questionnairePatient != null and questionnairePatient != ''">
+                questionnaire_patient = #{questionnairePatient},
+            </if>
+            <if test="questionnaireKeshi != null and questionnaireKeshi != ''">
+                questionnaire_keshi = #{questionnaireKeshi},
+            </if>
+            <if test="questionnaireDoctor != null and questionnaireDoctor != ''">
+                questionnaire_doctor = #{questionnaireDoctor},
+            </if>
+            <if test="questionnaireWay != null and questionnaireWay != ''">
+                questionnaire_way = #{questionnaireWay},
+            </if>
+            <if test="questionnaireSource != null and questionnaireSource != ''">
+                questionnaire_source = #{questionnaireSource},
+            </if>
+            <if test="questionnaireCost != null">
+                questionnaire_cost = #{questionnaireCost},
+            </if>
+            <if test="questionnaireState != null and questionnaireState != ''">
+                questionnaire_state = #{questionnaireState},
+            </if>
+        </set>
+        where questionnaire_id = #{questionnaireId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.questionnaire where questionnaire_id = #{questionnaireId}
+    </delete>
+
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM questionnaire
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM questionnaire
+            where
+            questionnaire_way = #{patientName}
+            AND
+            questionnaire_time >= #{startDate}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM questionnaire  WHERE questionnaire_id IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM questionnaire WHERE questionnaire_id = #{id}
+    </delete>
+
+</mapper>

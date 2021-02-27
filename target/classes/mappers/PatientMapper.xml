@@ -9,8 +9,7 @@
         <result property="patientKeshi" column="patient_keshi" jdbcType="VARCHAR"/>
         <result property="patientDoctor" column="patient_doctor" jdbcType="VARCHAR"/>
         <result property="patientPrice" column="patient_price" jdbcType="NUMERIC"/>
-        <result property="patientSwq
-        tate" column="patient_state" jdbcType="VARCHAR"/>
+        <result property="patientState" column="patient_state" jdbcType="VARCHAR"></result>
         <result property="patientTime" column="patient_time" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -100,9 +99,9 @@
     <select id="selectOneUser" resultMap="BaseResultMap" >
             SELECT * FROM patient
             where
-            patient_name = #{patientName}
+            patient_name = #{0}
             AND
-            patient_time >= #{startDate}
+            patient_time >= #{1}
     </select>
 
     <delete id="deleteMoreUsers" parameterType="java.util.List">
@@ -113,7 +112,7 @@
     </delete>
     <delete id="deleteOneUsers" parameterType="integer">
             DELETE FROM patient WHERE patient_id = #{id}
-  </delete>
+    </delete>
 
 
 </mapper>
