@@ -3,15 +3,14 @@ package com.cxy.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cxy.dao.OrdersDao;
-import com.cxy.dao.WenzhenDao;
+import com.cxy.dao.PrecriptionReverseDao;
 import com.cxy.pojo.Orders;
-import com.cxy.pojo.Wenzhen;
-import com.cxy.utils.Message4;
+import com.cxy.pojo.PrecriptionReverse;
 import com.cxy.utils.Message5;
+import com.cxy.utils.Message6;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,17 +23,17 @@ import java.util.List;
  * 问诊单管理controller
  */
 @RestController
-public class OrdersController {
+public class PrecriptionController {
 
   @Autowired
-  private OrdersDao ordersDao;
+  private PrecriptionReverseDao precriptionReverseDao;
 
   /**
    * 1 根据id删除所勾选的数据
    *
    * @param userArray 每条数据id组成的Int数组
    */
-  @PostMapping("/deleteAllOrders")
+  @PostMapping("/deleteAllPescription")
   public boolean deletePage(@RequestBody JSONObject userArray) {
     System.out.println("获取到的数组的id" + userArray);
     // 转化成JSON数组
@@ -45,7 +44,7 @@ public class OrdersController {
     for (Object id : idLists) {
       System.out.println(id);
     }
-    boolean isDeletes = ordersDao.deleteMoreUsers(idLists);
+    boolean isDeletes = precriptionReverseDao.deleteMoreUsers(idLists);
     System.out.println(isDeletes);
     return isDeletes;
   }
@@ -55,12 +54,12 @@ public class OrdersController {
    *
    * @param userId 单条数据的id
    */
-  @PostMapping("/deletSingalOrders")
+  @PostMapping("/deletSingalPescription")
   public void deleteSingalUser(@RequestBody JSONObject userId) {
     // 转换成工具对象
     Integer id = userId.getInteger("deleteId");
     System.out.println(id);
-    boolean isDeleteSuccess = ordersDao.deleteOneUsers(id);
+    boolean isDeleteSuccess = precriptionReverseDao.deleteOneUsers(id);
     System.out.println(isDeleteSuccess);
   }
 
@@ -72,8 +71,8 @@ public class OrdersController {
    * @param keywords
    * @return 返回到查询的对象，然后前端进行赋值
    */
-  @PostMapping("/getOneOrdersInfo")
-  public List<Orders> getOneUserInfo(@RequestBody JSONObject keywords) {
+  @PostMapping("/getOnePescriptionInfo")
+  public List<PrecriptionReverse> getOneUserInfo(@RequestBody JSONObject keywords) {
     // 前端获取的关键字信息参数
     String keyName = keywords.getString("keyName");
     Date startDate = keywords.getDate("startDate");
@@ -85,10 +84,7 @@ public class OrdersController {
     String formatEndTime = dateFormat.format(endDate);
     System.out.println(formatStartTime +"====" +formatEndTime);
     System.out.println(keyName);
-    List<Orders> userList = ordersDao.selectOneUser(keyName,formatStartTime,formatEndTime);
-    for(Orders orders : userList) {
-      System.out.println(orders.getOrderGetname());
-    }
+    List<PrecriptionReverse> userList = precriptionReverseDao.selectOneUser(keyName,formatStartTime,formatEndTime);
     // 用数组来将对象转起来
     return userList;
   }
@@ -98,20 +94,20 @@ public class OrdersController {
    * @param requestParm 请求的页数，一页展示的数据量
    * @return 返回需要的数据信息，然后展示在前端
    */
-  @PostMapping("/getAllOrdersInfo")
-  public Message5 getAllUserInfo(@RequestBody JSONObject requestParm) {
+  @PostMapping("/getAllPescriptionInfo")
+  public Message6 getAllUserInfo(@RequestBody JSONObject requestParm) {
     // 装信息的工具类
-    Message5 message = new Message5();
+    Message6 message = new Message6();
     // 当前页码 每页显示页数
     Integer currentPage = requestParm.getInteger("currentPage");
     Integer pageSize = requestParm.getInteger("pageSize");
     // 利用插件进行分页
     PageHelper.startPage(currentPage,pageSize);
-    List<Orders> userList = ordersDao.selectAllUsers();
-    for(Orders questionnaire: userList){
+    List<PrecriptionReverse> userList = precriptionReverseDao.selectAllUsers();
+    for(PrecriptionReverse questionnaire: userList){
       System.out.println(questionnaire);
     }
-    PageInfo<Orders> pageInfo = new PageInfo<>(userList);
+    PageInfo<PrecriptionReverse> pageInfo = new PageInfo<>(userList);
     System.out.println(pageInfo);
     int pages = pageInfo.getPages();
     int total = (int) pageInfo.getTotal();

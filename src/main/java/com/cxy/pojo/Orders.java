@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * (Orders)实体类
- *
  * @author makejava
  * @since 2021-02-27 22:58:21
  */
@@ -18,8 +17,8 @@ public class Orders implements Serializable {
     */
     private Integer orderId;
     /**
-    * 订单提交时间
-    */
+     * 订单提交时间
+     */
     private Object orderTime;
     /**
     * 订单用户名

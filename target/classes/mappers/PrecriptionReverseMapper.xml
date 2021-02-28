@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.PrecriptionReverseDao">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.PrecriptionReverse">
+        <!--@Table precription_reverse-->
+        <result property="reverseId" column="reverse_id" jdbcType="INTEGER"/>
+        <result property="reverseNumber" column="reverse_number" jdbcType="INTEGER"/>
+        <result property="prescriptionNumber" column="prescription_number" jdbcType="INTEGER"/>
+        <result property="patient" column="patient" jdbcType="VARCHAR"/>
+        <result property="keshi" column="keshi" jdbcType="VARCHAR"/>
+        <result property="doctor" column="doctor" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="orderState" column="order_state" jdbcType="VARCHAR"/>
+        <result property="chufangState" column="chufang_state" jdbcType="VARCHAR"/>
+        <result property="payWay" column="pay_way" jdbcType="VARCHAR"/>
+        <result property="fayaoState" column="fayao_state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          reverse_id, reverse_number, prescription_number, patient, keshi, doctor, price, order_state, chufang_state, pay_way, fayao_state
+        from hispitaldb.precription_reverse
+        where reverse_id = #{reverseId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          reverse_id, reverse_number, prescription_number, patient, keshi, doctor, price, order_state, chufang_state, pay_way, fayao_state
+        from hispitaldb.precription_reverse
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          reverse_id, reverse_number, prescription_number, patient, keshi, doctor, price, order_state, chufang_state, pay_way, fayao_state
+        from hispitaldb.precription_reverse
+        <where>
+            <if test="reverseId != null">
+                and reverse_id = #{reverseId}
+            </if>
+            <if test="reverseNumber != null">
+                and reverse_number = #{reverseNumber}
+            </if>
+            <if test="prescriptionNumber != null">
+                and prescription_number = #{prescriptionNumber}
+            </if>
+            <if test="patient != null and patient != ''">
+                and patient = #{patient}
+            </if>
+            <if test="keshi != null and keshi != ''">
+                and keshi = #{keshi}
+            </if>
+            <if test="doctor != null and doctor != ''">
+                and doctor = #{doctor}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="orderState != null and orderState != ''">
+                and order_state = #{orderState}
+            </if>
+            <if test="chufangState != null and chufangState != ''">
+                and chufang_state = #{chufangState}
+            </if>
+            <if test="payWay != null and payWay != ''">
+                and pay_way = #{payWay}
+            </if>
+            <if test="fayaoState != null and fayaoState != ''">
+                and fayao_state = #{fayaoState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="reverseId" useGeneratedKeys="true">
+        insert into hispitaldb.precription_reverse(reverse_number, prescription_number, patient, keshi, doctor, price, order_state, chufang_state, pay_way, fayao_state)
+        values (#{reverseNumber}, #{prescriptionNumber}, #{patient}, #{keshi}, #{doctor}, #{price}, #{orderState}, #{chufangState}, #{payWay}, #{fayaoState})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.precription_reverse
+        <set>
+            <if test="reverseNumber != null">
+                reverse_number = #{reverseNumber},
+            </if>
+            <if test="prescriptionNumber != null">
+                prescription_number = #{prescriptionNumber},
+            </if>
+            <if test="patient != null and patient != ''">
+                patient = #{patient},
+            </if>
+            <if test="keshi != null and keshi != ''">
+                keshi = #{keshi},
+            </if>
+            <if test="doctor != null and doctor != ''">
+                doctor = #{doctor},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="orderState != null and orderState != ''">
+                order_state = #{orderState},
+            </if>
+            <if test="chufangState != null and chufangState != ''">
+                chufang_state = #{chufangState},
+            </if>
+            <if test="payWay != null and payWay != ''">
+                pay_way = #{payWay},
+            </if>
+            <if test="fayaoState != null and fayaoState != ''">
+                fayao_state = #{fayaoState},
+            </if>
+        </set>
+        where reverse_id = #{reverseId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.precription_reverse where reverse_id = #{reverseId}
+    </delete>
+
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM precription_reverse
+    </select>
+
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM precription_reverse
+            where
+            patient = #{patientName}
+            AND
+            order_time >= #{startDate}
+    </select>
+
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM orders WHERE IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM precription_reverse WHERE reverse_id = #{id}
+    </delete>
+
+
+</mapper>
