@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.RefundDao">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Refund">
+        <!--@Table refund-->
+        <result property="refundId" column="refund_id" jdbcType="INTEGER"/>
+        <result property="refundNumber" column="refund_number" jdbcType="INTEGER"/>
+        <result property="refundDate" column="refund_date" jdbcType="OTHER"/>
+        <result property="refundUsername" column="refund_username" jdbcType="VARCHAR"/>
+        <result property="refundPrice" column="refund_price" jdbcType="NUMERIC"/>
+        <result property="refundSource" column="refund_source" jdbcType="VARCHAR"/>
+        <result property="refundState" column="refund_state" jdbcType="VARCHAR"/>
+        <result property="refundTime" column="refund_time" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          refund_id, refund_number, refund_date, refund_username, refund_price, refund_source, refund_state, refund_time
+        from hispitaldb.refund
+        where refund_id = #{refundId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          refund_id, refund_number, refund_date, refund_username, refund_price, refund_source, refund_state, refund_time
+        from hispitaldb.refund
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          refund_id, refund_number, refund_date, refund_username, refund_price, refund_source, refund_state, refund_time
+        from hispitaldb.refund
+        <where>
+            <if test="refundId != null">
+                and refund_id = #{refundId}
+            </if>
+            <if test="refundNumber != null">
+                and refund_number = #{refundNumber}
+            </if>
+            <if test="refundDate != null">
+                and refund_date = #{refundDate}
+            </if>
+            <if test="refundUsername != null and refundUsername != ''">
+                and refund_username = #{refundUsername}
+            </if>
+            <if test="refundPrice != null">
+                and refund_price = #{refundPrice}
+            </if>
+            <if test="refundSource != null and refundSource != ''">
+                and refund_source = #{refundSource}
+            </if>
+            <if test="refundState != null and refundState != ''">
+                and refund_state = #{refundState}
+            </if>
+            <if test="refundTime != null">
+                and refund_time = #{refundTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="refundId" useGeneratedKeys="true">
+        insert into hispitaldb.refund(refund_number, refund_date, refund_username, refund_price, refund_source, refund_state, refund_time)
+        values (#{refundNumber}, #{refundDate}, #{refundUsername}, #{refundPrice}, #{refundSource}, #{refundState}, #{refundTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.refund
+        <set>
+            <if test="refundNumber != null">
+                refund_number = #{refundNumber},
+            </if>
+            <if test="refundDate != null">
+                refund_date = #{refundDate},
+            </if>
+            <if test="refundUsername != null and refundUsername != ''">
+                refund_username = #{refundUsername},
+            </if>
+            <if test="refundPrice != null">
+                refund_price = #{refundPrice},
+            </if>
+            <if test="refundSource != null and refundSource != ''">
+                refund_source = #{refundSource},
+            </if>
+            <if test="refundState != null and refundState != ''">
+                refund_state = #{refundState},
+            </if>
+            <if test="refundTime != null">
+                refund_time = #{refundTime},
+            </if>
+        </set>
+        where refund_id = #{refundId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.refund where refund_id = #{refundId}
+    </delete>
+
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM refund
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM refund
+            where
+            refund_username = #{patientName}
+            AND
+            refund_time >= #{startDate}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM refund  WHERE refund_id IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM refund WHERE refund_id = #{id}
+    </delete>
+
+</mapper>
