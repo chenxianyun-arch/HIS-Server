@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.JiesuanDao">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Jiesuan">
+        <!--@Table jiesuan-->
+        <result property="jiesuanId" column="jiesuan_id" jdbcType="INTEGER"/>
+        <result property="jiesuanDoctor" column="jiesuan_doctor" jdbcType="VARCHAR"/>
+        <result property="jiesuanPrice" column="jiesuan_price" jdbcType="NUMERIC"/>
+        <result property="jiesuanCard" column="jiesuan_card" jdbcType="VARCHAR"/>
+        <result property="jiesuanState" column="jiesuan_state" jdbcType="VARCHAR"/>
+        <result property="jiesuanDate" column="jiesuan_date" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          jiesuan_id, jiesuan_doctor, jiesuan_price, jiesuan_card, jiesuan_state, jiesuan_date
+        from hispitaldb.jiesuan
+        where jiesuan_id = #{jiesuanId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          jiesuan_id, jiesuan_doctor, jiesuan_price, jiesuan_card, jiesuan_state, jiesuan_date
+        from hispitaldb.jiesuan
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          jiesuan_id, jiesuan_doctor, jiesuan_price, jiesuan_card, jiesuan_state, jiesuan_date
+        from hispitaldb.jiesuan
+        <where>
+            <if test="jiesuanId != null">
+                and jiesuan_id = #{jiesuanId}
+            </if>
+            <if test="jiesuanDoctor != null and jiesuanDoctor != ''">
+                and jiesuan_doctor = #{jiesuanDoctor}
+            </if>
+            <if test="jiesuanPrice != null">
+                and jiesuan_price = #{jiesuanPrice}
+            </if>
+            <if test="jiesuanCard != null and jiesuanCard != ''">
+                and jiesuan_card = #{jiesuanCard}
+            </if>
+            <if test="jiesuanState != null and jiesuanState != ''">
+                and jiesuan_state = #{jiesuanState}
+            </if>
+            <if test="jiesuanDate != null">
+                and jiesuan_date = #{jiesuanDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="jiesuanId" useGeneratedKeys="true">
+        insert into hispitaldb.jiesuan(jiesuan_doctor, jiesuan_price, jiesuan_card, jiesuan_state, jiesuan_date)
+        values (#{jiesuanDoctor}, #{jiesuanPrice}, #{jiesuanCard}, #{jiesuanState}, #{jiesuanDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.jiesuan
+        <set>
+            <if test="jiesuanDoctor != null and jiesuanDoctor != ''">
+                jiesuan_doctor = #{jiesuanDoctor},
+            </if>
+            <if test="jiesuanPrice != null">
+                jiesuan_price = #{jiesuanPrice},
+            </if>
+            <if test="jiesuanCard != null and jiesuanCard != ''">
+                jiesuan_card = #{jiesuanCard},
+            </if>
+            <if test="jiesuanState != null and jiesuanState != ''">
+                jiesuan_state = #{jiesuanState},
+            </if>
+            <if test="jiesuanDate != null">
+                jiesuan_date = #{jiesuanDate},
+            </if>
+        </set>
+        where jiesuan_id = #{jiesuanId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.jiesuan where jiesuan_id = #{jiesuanId}
+    </delete>
+
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM jiesuan
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM jiesuan
+            where
+            jiesuan_date = #{patientName}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM jiesuan  WHERE jiesuan_id IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM jiesuan WHERE jiesuan_id = #{id}
+    </delete>
+
+</mapper>
