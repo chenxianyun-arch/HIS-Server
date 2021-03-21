@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.ShenheMapper">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Shenhe">
+        <!--@Table shenhe-->
+        <result property="shenheId" column="shenhe_id" jdbcType="INTEGER"/>
+        <result property="shenheName" column="shenhe_name" jdbcType="VARCHAR"/>
+        <result property="shenhePicture" column="shenhe_picture" jdbcType="VARCHAR"/>
+        <result property="shenhePrice" column="shenhe_price" jdbcType="NUMERIC"/>
+        <result property="shenheState" column="shenhe_state" jdbcType="VARCHAR"/>
+        <result property="shenheZhuangtai" column="shenhe_zhuangtai" jdbcType="VARCHAR"/>
+        <result property="shenheKucun" column="shenhe_kucun" jdbcType="VARCHAR"/>
+        <result property="shenheTime" column="shenhe_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          shenhe_id, shenhe_name, shenhe_picture, shenhe_price, shenhe_state, shenhe_zhuangtai, shenhe_kucun, shenhe_time
+        from hispitaldb.shenhe
+        where shenhe_id = #{shenheId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          shenhe_id, shenhe_name, shenhe_picture, shenhe_price, shenhe_state, shenhe_zhuangtai, shenhe_kucun, shenhe_time
+        from hispitaldb.shenhe
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          shenhe_id, shenhe_name, shenhe_picture, shenhe_price, shenhe_state, shenhe_zhuangtai, shenhe_kucun, shenhe_time
+        from hispitaldb.shenhe
+        <where>
+            <if test="shenheId != null">
+                and shenhe_id = #{shenheId}
+            </if>
+            <if test="shenheName != null and shenheName != ''">
+                and shenhe_name = #{shenheName}
+            </if>
+            <if test="shenhePicture != null and shenhePicture != ''">
+                and shenhe_picture = #{shenhePicture}
+            </if>
+            <if test="shenhePrice != null">
+                and shenhe_price = #{shenhePrice}
+            </if>
+            <if test="shenheState != null and shenheState != ''">
+                and shenhe_state = #{shenheState}
+            </if>
+            <if test="shenheZhuangtai != null and shenheZhuangtai != ''">
+                and shenhe_zhuangtai = #{shenheZhuangtai}
+            </if>
+            <if test="shenheKucun != null and shenheKucun != ''">
+                and shenhe_kucun = #{shenheKucun}
+            </if>
+            <if test="shenheTime != null">
+                and shenhe_time = #{shenheTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="shenheId" useGeneratedKeys="true">
+        insert into hispitaldb.shenhe(shenhe_name, shenhe_picture, shenhe_price, shenhe_state, shenhe_zhuangtai, shenhe_kucun, shenhe_time)
+        values (#{shenheName}, #{shenhePicture}, #{shenhePrice}, #{shenheState}, #{shenheZhuangtai}, #{shenheKucun}, #{shenheTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.shenhe
+        <set>
+            <if test="shenheName != null and shenheName != ''">
+                shenhe_name = #{shenheName},
+            </if>
+            <if test="shenhePicture != null and shenhePicture != ''">
+                shenhe_picture = #{shenhePicture},
+            </if>
+            <if test="shenhePrice != null">
+                shenhe_price = #{shenhePrice},
+            </if>
+            <if test="shenheState != null and shenheState != ''">
+                shenhe_state = #{shenheState},
+            </if>
+            <if test="shenheZhuangtai != null and shenheZhuangtai != ''">
+                shenhe_zhuangtai = #{shenheZhuangtai},
+            </if>
+            <if test="shenheKucun != null and shenheKucun != ''">
+                shenhe_kucun = #{shenheKucun},
+            </if>
+            <if test="shenheTime != null">
+                shenhe_time = #{shenheTime},
+            </if>
+        </set>
+        where shenhe_id = #{shenheId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.shenhe where shenhe_id = #{shenheId}
+    </delete>
+
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM shenhe
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM shenhe
+            where
+            shenhe_time = #{patientName}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM shenhe  WHERE shenhe_id  IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM shenhe WHERE shenhe_id = #{id}
+    </delete>
+
+
+</mapper>

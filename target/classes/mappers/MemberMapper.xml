@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.MemberMapper">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Member">
+        <!--@Table member-->
+        <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+        <result property="memberName" column="member_name" jdbcType="VARCHAR"/>
+        <result property="memberPhone" column="member_phone" jdbcType="VARCHAR"/>
+        <result property="memberRole" column="member_role" jdbcType="VARCHAR"/>
+        <result property="memberState" column="member_state" jdbcType="OTHER"/>
+        <result property="memberTime" column="member_time" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          member_id, member_name, member_phone, member_role, member_state, member_time
+        from hispitaldb.member
+        where member_id = #{memberId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          member_id, member_name, member_phone, member_role, member_state, member_time
+        from hispitaldb.member
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          member_id, member_name, member_phone, member_role, member_state, member_time
+        from hispitaldb.member
+        <where>
+            <if test="memberId != null">
+                and member_id = #{memberId}
+            </if>
+            <if test="memberName != null and memberName != ''">
+                and member_name = #{memberName}
+            </if>
+            <if test="memberPhone != null and memberPhone != ''">
+                and member_phone = #{memberPhone}
+            </if>
+            <if test="memberRole != null and memberRole != ''">
+                and member_role = #{memberRole}
+            </if>
+            <if test="memberState != null">
+                and member_state = #{memberState}
+            </if>
+            <if test="memberTime != null">
+                and member_time = #{memberTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="memberId" useGeneratedKeys="true">
+        insert into hispitaldb.member(member_name, member_phone, member_role, member_state, member_time)
+        values (#{memberName}, #{memberPhone}, #{memberRole}, #{memberState}, #{memberTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.member
+        <set>
+            <if test="memberName != null and memberName != ''">
+                member_name = #{memberName},
+            </if>
+            <if test="memberPhone != null and memberPhone != ''">
+                member_phone = #{memberPhone},
+            </if>
+            <if test="memberRole != null and memberRole != ''">
+                member_role = #{memberRole},
+            </if>
+            <if test="memberState != null">
+                member_state = #{memberState},
+            </if>
+            <if test="memberTime != null">
+                member_time = #{memberTime},
+            </if>
+        </set>
+        where member_id = #{memberId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.member where member_id = #{memberId}
+    </delete>
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM member
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM member
+            where
+            member_time = #{patientName}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM member  WHERE member_id  IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM member WHERE member_id = #{id}
+    </delete>
+
+</mapper>

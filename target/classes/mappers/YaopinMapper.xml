@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.dao.YaopinMapper">
+
+    <resultMap id="BaseResultMap" type="com.cxy.pojo.Yaopin">
+        <!--@Table yaopin-->
+        <result property="yaopinId" column="yaopin_id" jdbcType="INTEGER"/>
+        <result property="yaopinName" column="yaopin_name" jdbcType="VARCHAR"/>
+        <result property="yaopinJibie" column="yaopin_jibie" jdbcType="VARCHAR"/>
+        <result property="yaopinState" column="yaopin_state" jdbcType="VARCHAR"/>
+        <result property="yaopinBeizhu" column="yaopin_beizhu" jdbcType="VARCHAR"/>
+        <result property="yaopinShangchuan" column="yaopin_shangchuan" jdbcType="VARCHAR"/>
+        <result property="yaopinDate" column="yaopin_date" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          yaopin_id, yaopin_name, yaopin_jibie, yaopin_state, yaopin_beizhu, yaopin_shangchuan, yaopin_date
+        from hispitaldb.yaopin
+        where yaopin_id = #{yaopinId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          yaopin_id, yaopin_name, yaopin_jibie, yaopin_state, yaopin_beizhu, yaopin_shangchuan, yaopin_date
+        from hispitaldb.yaopin
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          yaopin_id, yaopin_name, yaopin_jibie, yaopin_state, yaopin_beizhu, yaopin_shangchuan, yaopin_date
+        from hispitaldb.yaopin
+        <where>
+            <if test="yaopinId != null">
+                and yaopin_id = #{yaopinId}
+            </if>
+            <if test="yaopinName != null and yaopinName != ''">
+                and yaopin_name = #{yaopinName}
+            </if>
+            <if test="yaopinJibie != null and yaopinJibie != ''">
+                and yaopin_jibie = #{yaopinJibie}
+            </if>
+            <if test="yaopinState != null and yaopinState != ''">
+                and yaopin_state = #{yaopinState}
+            </if>
+            <if test="yaopinBeizhu != null and yaopinBeizhu != ''">
+                and yaopin_beizhu = #{yaopinBeizhu}
+            </if>
+            <if test="yaopinShangchuan != null and yaopinShangchuan != ''">
+                and yaopin_shangchuan = #{yaopinShangchuan}
+            </if>
+            <if test="yaopinDate != null">
+                and yaopin_date = #{yaopinDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="yaopinId" useGeneratedKeys="true">
+        insert into hispitaldb.yaopin(yaopin_name, yaopin_jibie, yaopin_state, yaopin_beizhu, yaopin_shangchuan, yaopin_date)
+        values (#{yaopinName}, #{yaopinJibie}, #{yaopinState}, #{yaopinBeizhu}, #{yaopinShangchuan}, #{yaopinDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hispitaldb.yaopin
+        <set>
+            <if test="yaopinName != null and yaopinName != ''">
+                yaopin_name = #{yaopinName},
+            </if>
+            <if test="yaopinJibie != null and yaopinJibie != ''">
+                yaopin_jibie = #{yaopinJibie},
+            </if>
+            <if test="yaopinState != null and yaopinState != ''">
+                yaopin_state = #{yaopinState},
+            </if>
+            <if test="yaopinBeizhu != null and yaopinBeizhu != ''">
+                yaopin_beizhu = #{yaopinBeizhu},
+            </if>
+            <if test="yaopinShangchuan != null and yaopinShangchuan != ''">
+                yaopin_shangchuan = #{yaopinShangchuan},
+            </if>
+            <if test="yaopinDate != null">
+                yaopin_date = #{yaopinDate},
+            </if>
+        </set>
+        where yaopin_id = #{yaopinId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hispitaldb.yaopin where yaopin_id = #{yaopinId}
+    </delete>
+
+    <!-- 查询全部数据 -->
+    <select id="selectAllUsers"  resultMap="BaseResultMap">
+            SELECT * FROM yaopin
+    </select>
+
+    <!-- 查询特定一条数据 -->
+    <select id="selectOneUser" resultMap="BaseResultMap" >
+            SELECT * FROM yaopin
+            where
+            yaopin_date = #{patientName}
+    </select>
+
+    <!--  多选删除  -->
+    <delete id="deleteMoreUsers" parameterType="java.util.List">
+        DELETE FROM yaopin  WHERE yaopin_id  IN
+        <foreach item="items" index="index" collection="list" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <!--  删除特定id  -->
+    <delete id="deleteOneUsers" parameterType="integer">
+            DELETE FROM yaopin WHERE yaopin_id = #{id}
+    </delete>
+
+</mapper>
