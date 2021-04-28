@@ -1,5 +1,6 @@
 package com.cxy.dao;
 
+import com.cxy.pojo.Doctor;
 import com.cxy.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
@@ -17,5 +18,7 @@ public interface UserDao {
   boolean deleteMoreUsers(List list);
   // 更改用户数据
   Boolean updateUserInfo(User user);
+
+  Boolean insertUserLoginInfo(User user);
 
 }

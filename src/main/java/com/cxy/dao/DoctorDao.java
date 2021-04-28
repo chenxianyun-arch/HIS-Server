@@ -1,8 +1,10 @@
 package com.cxy.dao;
 
 import com.cxy.pojo.Doctor;
+import com.cxy.pojo.Patient;
 import com.cxy.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 @Mapper
@@ -28,4 +30,10 @@ public interface DoctorDao {
     boolean deleteMoreUsers(List list);
     // 更改用户数据
     Boolean updateUserInfo(User user);
+
+    Boolean insertDoctorLoginInfo(Doctor doctor);
+
+    // 插入管理员信息
+    Boolean insertAdminLoginInfo(Doctor doctor);
+
 }

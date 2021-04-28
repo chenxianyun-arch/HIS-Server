@@ -2,8 +2,6 @@ package com.cxy.pojo;
 
 import lombok.*;
 
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,6 +12,15 @@ import lombok.*;
  * 用户实体类
  */
 public class User {
+
+  public User(String date, String name, String time, Boolean value, String phone, String password) {
+    this.date = date;
+    this.name = name;
+    this.time = time;
+    this.value = value;
+    this.phone = phone;
+    this.password = password;
+  }
 
   // 用户ID
   private Integer userId;
@@ -32,4 +39,7 @@ public class User {
 
   // 电话
   private String phone;
+
+  // 用户密码
+  private String password;
 }

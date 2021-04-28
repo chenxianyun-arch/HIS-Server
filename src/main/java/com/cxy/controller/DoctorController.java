@@ -2,10 +2,14 @@ package com.cxy.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cxy.dao.AdminDao;
 import com.cxy.dao.DoctorDao;
+import com.cxy.dao.UserDao;
+import com.cxy.pojo.Admin;
 import com.cxy.pojo.Doctor;
 import com.cxy.pojo.User;
 import com.cxy.utils.Message1;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,12 @@ public class DoctorController {
 
   @Autowired
   private DoctorDao doctorDao;
+
+  @Autowired
+  private UserDao userDao;
+
+  @Autowired
+  private AdminDao adminDao;
 
   /**
    * 1 根据id删除所勾选的数据
@@ -107,6 +117,27 @@ public class DoctorController {
     message.setPageLength(total);
     message.setUserList(userList);
     return message;
+  }
+
+
+  @PostMapping("/registerInfo")
+  public void registerDoctor(@RequestBody JSONObject keywords) {
+    // 从JSON串中获取用户名和密码信息
+    String username = keywords.getString("username");
+    String password = keywords.getString("password");
+    String value = keywords.getString("role");
+    // 构造查询对象
+    Doctor doctor = new Doctor(username,password,"18381911292","广东医科大学","儿科","住院医师","2021-03-12","审核通过","审核通过",30);
+    User user = new User("2021-05-11",username,"2021-01-12",true,"15678321892",password);
+    Admin admin = new Admin(username,password);
+    // 判断进行注册哪个角色
+    switch (value){
+      case "医生": doctorDao.insertDoctorLoginInfo(doctor);
+      break;
+      case "管理员": adminDao.insertAdminLoginInfo(admin);
+      break;
+      case "用户": userDao.insertUserLoginInfo(user);
+    }
   }
 
 }

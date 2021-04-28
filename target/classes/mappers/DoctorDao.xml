@@ -169,4 +169,23 @@
   <delete id="deleteOneUsers" parameterType="integer">
             DELETE FROM doctor WHERE doctor_id = #{id}
   </delete>
+  <!-- 增加医生的数据 -->
+  <insert id="insertDoctorLoginInfo">
+<!--        INSERT INTO patient(patient_name,patient_password)-->
+<!--            value (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR});-->
+            INSERT INTO doctor(doctor_name, doctor_tel, doctor_hospital, doctor_keshi, doctor_zhiceng, doctor_addtime, doctor_status, doctor_service_status, doctor_fansNumber,doctor_password)  value
+                (#{doctorName},
+                #{doctorTel},
+                #{doctorHospital},
+                #{doctorKeshi},
+                #{doctorZhiceng},
+                #{doctorAddtime},
+                #{doctorStatus},
+                #{doctorServiceStatus},
+                #{doctorFansnumber},
+                #{doctorPassword}
+                )
+  </insert>
+
+
 </mapper>

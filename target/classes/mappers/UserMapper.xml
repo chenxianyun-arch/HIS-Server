@@ -25,4 +25,16 @@
   <update id="updateUserInfo">
             UPDATE USER SET VALUE = #{value} WHERE userId = #{userId}
   </update>
+
+  <insert id="insertUserLoginInfo">
+    INSERT INTO user(date, name, time, value, phone, password)
+    value (
+        #{date,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{time,jdbcType=VARCHAR},
+        #{value,jdbcType=BOOLEAN},
+        #{phone,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR}
+    )
+  </insert>
 </mapper>

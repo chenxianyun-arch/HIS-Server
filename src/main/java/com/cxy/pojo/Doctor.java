@@ -17,6 +17,20 @@ import lombok.*;
 @Getter
 @ToString
 public class Doctor implements Serializable {
+
+    public Doctor(String doctorName, String doctorPassword, String doctorTel, String doctorHospital, String doctorKeshi, String doctorZhiceng, String doctorAddtime, String doctorStatus, String doctorServiceStatus, Integer doctorFansnumber) {
+        this.doctorName = doctorName;
+        this.doctorPassword = doctorPassword;
+        this.doctorTel = doctorTel;
+        this.doctorHospital = doctorHospital;
+        this.doctorKeshi = doctorKeshi;
+        this.doctorZhiceng = doctorZhiceng;
+        this.doctorAddtime = doctorAddtime;
+        this.doctorStatus = doctorStatus;
+        this.doctorServiceStatus = doctorServiceStatus;
+        this.doctorFansnumber = doctorFansnumber;
+    }
+
     /**
      * 医生id
      */
@@ -26,6 +40,11 @@ public class Doctor implements Serializable {
      * 医生姓名
      */
     private String doctorName;
+
+    /**
+     * 医生密码
+     */
+    private String doctorPassword;
 
     /**
      * 医生电话
