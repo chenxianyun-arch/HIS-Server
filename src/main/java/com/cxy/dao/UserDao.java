@@ -19,6 +19,10 @@ public interface UserDao {
   // 更改用户数据
   Boolean updateUserInfo(User user);
 
+  // 注册用户
   Boolean insertUserLoginInfo(User user);
+
+  // 更改用户名密码
+  Boolean updateUserPwdInfo(User user);
 
 }

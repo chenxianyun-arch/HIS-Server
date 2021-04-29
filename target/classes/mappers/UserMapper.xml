@@ -22,8 +22,10 @@
             DELETE FROM USER WHERE userId = #{id}
   </delete>
 
-  <update id="updateUserInfo">
-            UPDATE USER SET VALUE = #{value} WHERE userId = #{userId}
+  <update id="updateUserPwdInfo">
+            UPDATE user
+            SET password = #{password,jdbcType=VARCHAR}
+            WHERE name = #{name,jdbcType=VARCHAR}
   </update>
 
   <insert id="insertUserLoginInfo">

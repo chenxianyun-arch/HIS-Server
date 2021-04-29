@@ -34,6 +34,6 @@ public interface DoctorDao {
     Boolean insertDoctorLoginInfo(Doctor doctor);
 
     // 插入管理员信息
-    Boolean insertAdminLoginInfo(Doctor doctor);
+    Boolean updateDoctorPwdInfo(Doctor doctor);
 
 }

@@ -4,12 +4,18 @@
 
   <!-- 增加医生的数据 -->
   <insert id="insertAdminLoginInfo">
-            INSERT INTO admin(admin_name, admin_password) value
-                (
-                    #{adminName,jdbcType=VARCHAR},
-                    #{adminPassword,jdbcType=VARCHAR}
-                )
+    INSERT INTO admin(admin_name, admin_password) value
+        (
+            #{adminName,jdbcType=VARCHAR},
+            #{adminPassword,jdbcType=VARCHAR}
+        )
   </insert>
+
+  <update id="updateAdminPwdInfo" parameterType="com.cxy.pojo.Admin">
+    UPDATE admin
+    SET admin_password = #{adminPassword,jdbcType=VARCHAR}
+    WHERE admin_name = #{adminName,jdbcType=VARCHAR}
+  </update>
 
 
 </mapper>

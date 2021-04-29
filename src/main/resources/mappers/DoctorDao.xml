@@ -187,5 +187,13 @@
                 )
   </insert>
 
+  <update id="updateDoctorPwdInfo" parameterType="com.cxy.pojo.Doctor">
+    UPDATE doctor
+    SET doctor_password = #{doctorPassword,jdbcType=VARCHAR}
+    WHERE doctor_name = #{doctorName,jdbcType=VARCHAR}
+  </update>
+
+
+
 
 </mapper>

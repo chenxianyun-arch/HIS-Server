@@ -140,4 +140,25 @@ public class DoctorController {
     }
   }
 
+  @PostMapping("/forgetpwd")
+  public void forgetPwd(@RequestBody JSONObject keywords) {
+    // 从JSON串中获取用户名和密码信息
+    String username = keywords.getString("username");
+    String password = keywords.getString("password");
+    String value = keywords.getString("role");
+    System.out.println(username+"+++"+ password +"+++"+value);
+    // 构造查询对象
+    Doctor doctor = new Doctor(username,password,"18381911292","广东医科大学","儿科","住院医师","2021-03-12","审核通过","审核通过",30);
+    User user = new User("2021-05-11",username,"2021-01-12",true,"15678321892",password);
+    Admin admin = new Admin(username,password);
+    // 判断进行注册哪个角色
+    switch (value) {
+      case "医生": doctorDao.updateDoctorPwdInfo(doctor);
+        break;
+      case "管理员": adminDao.updateAdminPwdInfo(admin);
+        break;
+      case "用户": userDao.updateUserPwdInfo(user);
+    }
+  }
+
 }
